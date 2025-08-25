@@ -1,0 +1,26 @@
+# #处理均值
+# import xarray as xr
+# import os
+# # 1. 需要处理的 NetCDF 文件列表
+# nc_files = os.listdir("E:/ISIMIP/bios/soilmoist/his")
+# # 2. 打开并合并多个 nc 文件（保留所有维度）
+# datasets = [xr.open_dataset("E:/ISIMIP/bios/soilmoist/his/"+f) for f in nc_files]
+# # 3. 计算变量 A 的均值（dim=0 表示对文件维度求均值）
+# ds_mean = xr.concat(datasets, dim="new_dim").mean(dim="new_dim")
+# # 4. 保存到新的 NetCDF 文件
+# output_file = "E:/ISIMIP/bios/soilmoist/mean/soilmoisthis_mean.nc"
+# ds_mean.to_netcdf(output_file)
+# # 5. 关闭数据集
+# for ds in datasets:
+#     ds.close()
+# print(f"变量 A 的均值已计算并保存至 {output_file}")
+# #月均nc转年均nc
+# # 读取 nc 文件
+# ds = xr.open_dataset("E:/ISIMIP/bios/soilmoist/mean/soilmoisthis_mean.nc")
+# # 确保 time 维度是 Datetime 格式
+# ds["time"] = xr.decode_cf(ds).time
+# # 计算年均值
+# ds_ann = ds.groupby("time.year").mean(dim="time")
+# # 另存为新的 nc 文件
+# ds_ann.to_netcdf("E:/ISIMIP/bios/soilmoist/mean/yearhis_mean.nc")
+# print("转换完成，已保存为 output.nc")
