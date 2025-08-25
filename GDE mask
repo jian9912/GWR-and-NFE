@@ -1,0 +1,23 @@
+# # GDE掩膜 
+# import numpy as np
+# file_p = "E:/ISIMIP/bios/soilmoist/mean/yearhis_mean.nc"
+# out_p = "E:/ISIMIP/bios/soilmoist/mean/yearhis_GDE_mean.nc"
+# var = "soilmoist"
+# # 读取数据
+# data = xr.open_dataset(file_p)  # 你的原始数据
+# mask = xr.open_dataset("E:/ISIMIP/bios/GDE_30min.nc")  # 掩膜数据
+# # 假设掩膜变量名为 'mask'，需要和数据的 lat/lon 维度匹配
+# mask_var = mask["gde"]
+# # 如果 mask 具有 time 维度但只是单一时间步，去掉 time 维度
+# if "time" in mask_var.dims:
+#     mask_var = mask_var.squeeze("time")
+# # 确保掩膜的纬度/经度和数据匹配
+# mask_var = mask_var.interp_like(data)
+# # 选择需要掩膜的变量
+# A_masked = data[var].where(mask_var == 1)  # 掩膜：0 的位置变 NaN
+# # 创建新的数据集
+# masked_data = data.copy()
+# masked_data[var] = A_masked
+# # 保存新 nc 文件
+# masked_data.to_netcdf(out_p)
+# print(out_p)
